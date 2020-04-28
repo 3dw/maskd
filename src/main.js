@@ -4,6 +4,9 @@ import axios from 'axios'
 import VueAxios from 'vue-axios'
 import './registerServiceWorker'
 import SuiVue from 'semantic-ui-vue'
+import infiniteScroll from 'vue-infinite-scroll'
+
+Vue.use(infiniteScroll)
 
 Vue.use(SuiVue)
 Vue.use(VueAxios, axios)

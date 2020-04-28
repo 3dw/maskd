@@ -1,10 +1,11 @@
 <template>
   <div class="hello">
     <sui-container>
-      <sui-table celled padded>
-        <sui-table-row v-for = "(d, idx) in donates" :key="idx">
+      <sui-header>前日總計捐贈：{{ total }} + 片</sui-header>
+      <sui-table celled padded v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="10">
+        <sui-table-row v-for = "(d, idx) in donates.slice(0, n)" :key="idx">
           <sui-table-cell v-for = "(a, j) in d" :key = "j" >
-            {{ a }}
+            {{ a | filler }}
           </sui-table-cell>
         </sui-table-row>
       </sui-table>
@@ -18,18 +19,42 @@ export default {
   name: 'HelloWorld',
   data () {
     return {
+      n: 100,
+      total: 0,
+      busy: false,
       donates: [
-        ['2020/04/27', '9', '王小明'],
-        ['2020/04/27', '6', '王大明']
       ]
+    }
+  },
+  filters: {
+    filler (a) {
+      if (!a || /^\s*$/.test(a)) {
+        return '不具名'
+      } else {
+        return a
+      }
+    }
+  },
+  methods: {
+    loadMore: function() {
+      this.busy = true
+      setTimeout(() => {
+        this.n += 100
+        this.busy = false
+      }, 20);
     }
   },
   mounted () {
     var vm = this
-    this.$http.get('https://data.nhi.gov.tw/Datasets/Download.ashx?rid=A21030000I-H50003-001&l=http://data.nhi.gov.tw/resource/maskd/maskd.csv').then(response => {
+    this.$http.get('/maskd_20200427.csv').then(response => {
       var par = (txt) => { return txt.split('\n').map((l) => { return l.split(',') }) }
-      if (response.data.length > 1) {
-        vm.donates = par(response.data)
+      // if (response.data.length > 1) {
+      vm.donates = par(response.data)
+      // }
+      for (var i = 1; i < vm.donates.length; i++) {
+        if (!isNaN(vm.total + parseInt(vm.donates[i][1]))) {
+          vm.total += parseInt(vm.donates[i][1])
+        }
       }
     })
   }
