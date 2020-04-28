@@ -36,12 +36,12 @@ export default {
     }
   },
   methods: {
-    loadMore: function() {
+    loadMore: function () {
       this.busy = true
       setTimeout(() => {
         this.n += 100
         this.busy = false
-      }, 20);
+      }, 20)
     }
   },
   mounted () {
