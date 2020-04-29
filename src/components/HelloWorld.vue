@@ -45,7 +45,7 @@ export default {
   },
   mounted () {
     var vm = this
-    this.$http.get('/maskd_20200427.csv').then(response => {
+    this.$http.get('/maskd_news.csv').then(response => {
       var ob = (l) => {
         var obj = { date: null, num: null, name: null }
         const list = l.split(',')
