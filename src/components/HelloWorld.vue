@@ -2,7 +2,7 @@
   <v-container>
     <v-row class="text-center">
       <v-col cols="12">
-        <h3>前日總計捐贈：{{ total }} + 片</h3>
+        <h3>前日總計捐贈：{{ total }} 片</h3>
         <input type="text" name="k" v-model="k" placeholder="人名關鍵字查詢">
             <v-data-table
               :headers="headers"
